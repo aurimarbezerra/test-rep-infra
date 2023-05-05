@@ -20,3 +20,22 @@ resource "google_sql_user" "users" {
   instance = google_sql_database_instance.main.name
   password = "changeme"
 }
+
+resource "google_secret_manager_secret" "db-password" {
+  provider = google-beta
+
+  secret_id = "db-password"
+
+  replication {
+    automatic = true
+  }
+
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "db-password-1" {
+  provider = google-beta
+
+  secret      = google_secret_manager_secret.db-password.id
+  secret_data = "changeme"
+}

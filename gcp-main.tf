@@ -5,6 +5,11 @@ resource "google_artifact_registry_repository" "my-repo" {
   format = "DOCKER"
 }
 
+resource "google_sql_database" "database" {
+  name     = "my-database"
+  instance = google_sql_database_instance.instance.name
+}
+
 resource "google_sql_database_instance" "main" {
   name             = "main-instance"
   database_version = "MYSQL_8_0"
